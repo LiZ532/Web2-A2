@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>about</title>
+    <link rel="stylesheet" href="css/default.css" />
+</head>
+
+<body>
+    <header>
+        <div class="header-top">
+            <div class="width-center">
+                <div class="header-logo "><img src="images/logo.png" alt=""></div>
+                <div class="header-title div-inline">
+                </div>
+                <div class="header-right">
+                    <span>Help Phone</span>
+                    <span>400-000-000</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-nav">
+            <nav>
+                <ul class="header-nav-ul am-collapse am-in">
+                    <li><a href="index.html" name="index">HOME</a></li>
+                    <li ><a href="fundraiser.html" name="show">FUNDRAISER</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="am-viewport" style="overflow: hidden; position: relative;text-align: center;">
+        <ul class="am-slides">
+            <li class="clone" style="display: block;margin-top: 20px;"><img src="images/banner2.png" style="width: 60vw;"></li>
+        </ul>
+    </div>
+    <main id="main">
+        <div class="index-main-title">
+            <p>About</p>
+        </div>
+        <div class="index-main-md">
+            <div class="left-area">
+                <img src="images/smcase1.png" alt="" id="image">
+            </div>
+            <div class="right-area">
+                <p id="caption"></p>
+                <span style="font-size: 16px;font-weight: bold;" id="current_funding"></span>
+                <p id="target_funding" style="color: #999999;"></p>
+                <p id="active" style="color:rgb(94, 226, 6);"></p>
+            </div>
+        </div>
+        <div class="index-main-title">
+            <p id="city" style="margin-bottom: 30px;"></p>
+            <span id="organizer" style="text-align: left;"></span>
+        </div>
+        <p style="text-align: center;"><button type="button" class="am-btn am-btn-danger" onclick="alert('This feature is under contruction')"  style="width: 150px;" >Donate</button>
+            <button type="button" class="am-btn am-btn-danger" onclick="window.location.href='fundraiser.html'"  style="width: 150px;border:1px solid darkgrey;background: darkgrey;color: #ffffff;" >Back</button></p>
+    </main>
+    <footer class="footer" style="margin-top: 30px;">
+        <div class="footer-pc">
+            <ul>
+                <li><a href="index.html">home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+                        href="fundraiser.html">fundraiser</a></li>
+                <li>Copyright &copy; 2024</li>
+            </ul>
+        </div>
+    </footer>
+    <script>
+         let params = new URLSearchParams(window.location.search)
+        fetch('http://localhost:5558/about/'+ params.get("fundraiserId"))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(res => {
+            if (res.code == 200) {
+                let data = res.data[0];
+                document.getElementById("image").setAttribute("src","images/"+data.image)
+                document.getElementById("caption").innerHTML=(data.caption)
+                document.getElementById("current_funding").innerHTML=("Current USD:  "+data.current_funding)
+                document.getElementById("target_funding").innerHTML=("Target USD:  "+data.target_funding)
+                document.getElementById("organizer").innerHTML=(data.organizer)
+                document.getElementById("city").innerHTML=("City: "+data.city+"/Category:"+data.name)
+                document.getElementById("active").innerHTML=("Active: "+(data.active==0?"No":"Yes"))
+            }
+        })
+        .catch(error => console.error('There was a problem with your fetch operation:', error));
+
+    </script>
+</body>
+
+</html>

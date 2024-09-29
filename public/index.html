@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>home</title>
+    <link rel="stylesheet" href="css/default.css" />
+</head>
+
+<body>
+    <header>
+        <div class="header-top">
+            <div class="width-center">
+                <div class="header-logo "><img src="images/logo.png" alt=""></div>
+                <div class="header-title div-inline">
+                </div>
+                <div class="header-right">
+                    <span>Help Phone</span>
+                    <span>400-000-000</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-nav">
+            <nav>
+                <ul class="header-nav-ul am-collapse am-in">
+                    <li class="on"><a href="index.html" name="index">HOME</a></li>
+                    <li><a href="fundraiser.html" name="show">FUNDRAISER</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="am-viewport" style="overflow: hidden; position: relative;text-align: center;">
+        <ul class="am-slides">
+            <li class="clone" style="display: block;margin-top: 20px;"><img src="images/banner.jpg"
+                    style="width: 80vw;"></li>
+        </ul>
+    </div>
+    <main>
+        <div class="index-main-title">
+            <p>About Us</p>
+            <span>Provide independent publishing, initiation, donation, interaction, and supervision functions for
+                public welfare projects</span>
+        </div>
+        <div class="index-main-body">
+            <ul id="huodong">
+            </ul>
+            <p>Its core is to provide one-stop services for netizens to seek help online, public welfare organizations
+                to claim and seek help, online fundraising, project feedback, public supervision, etc. Public welfare
+                organizations with public fundraising qualifications can raise funds for their own public welfare
+                projects through this platform.
+            </p>
+            <a href="fundraiser.html">MORE DATA</a>
+        </div>
+
+
+    </main>
+    <footer class="footer" style="margin-top: 30px;">
+        <div class="footer-pc">
+            <ul>
+                <li><a href="index.html">home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+                        href="fundraiser.html">fundraiser</a></li>
+                <li>Copyright &copy; 2024</li>
+            </ul>
+        </div>
+    </footer>
+    <script>
+        fetch('http://localhost:5558/getActiveData')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(res => {
+                if (res.code == 200) {
+                    var html = '';
+                    for (var i = 0; i < res.data.length; i++) {
+                        html += '<li><img src="images/' + res.data[i].image + '"><p>' + res.data[i].caption + '</p></li>'
+                    }
+                    document.getElementById('huodong').innerHTML = html;
+                }
+            })
+            .catch(error => console.error('There was a problem with your fetch operation:', error));
+    </script>
+
+</body>
+
+</html>
