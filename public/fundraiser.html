@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>fundraiser</title>
+    <link rel="stylesheet" href="css/default.css" />
+    <style>
+        .message-form li button{
+            width: 160px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-top">
+            <div class="width-center">
+                <div class="header-logo "><img src="images/logo.png" alt=""></div>
+                <div class="header-title div-inline">
+                </div>
+                <div class="header-right">
+                    <span>Help Phone</span>
+                    <span>400-000-000</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-nav">
+            <nav>
+                <ul class="header-nav-ul am-collapse am-in">
+                    <li><a href="index.html" name="index">HOME</a></li>
+                    <li class="on"><a href="fundraiser.html" name="show">FUNDRAISER</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="index-main-title">
+            <p>Fundraisers</p>
+        </div>
+        <div class="message-body">
+            <div class="message-form">
+                <form method="post">
+                    <ul>
+                        <li><label for="title">caption&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input placeholder="Please enter the caption" style="line-height: 40px;height: 40px;border: 1px solid #333;width: 940px;" class="am-form-field" id="title" name="title"></li>
+                        <li><label for="tel">category</label><select style="line-height: 40px;height: 40px;width: 945px;" id="categoryId" ></select></li>
+                        <li><button type="button" class="am-btn am-btn-danger" onclick="searchData()"  style="margin-left:105px;">search</button>
+                            <button type="button" class="am-btn am-btn-danger" onclick="clearData()"  style="margin-left:30px;border:1px solid darkgrey;background: darkgrey;color: #ffffff;">clear</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <ul class="pro-body">
+        </ul>
+    </main>
+    <footer class="footer" style="margin-top: 30px;">
+        <div class="footer-pc">
+            <ul>
+                <li><a href="index.html">home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+                        href="fundraiser.html">fundraiser</a></li>
+                <li>Copyright &copy; 2024</li>
+            </ul>
+        </div>
+    </footer>
+    <script src="./js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $.ajax({
+                url: 'http://localhost:5558/categoryList',
+                type: 'get',
+                success: function (res) {
+                    console.log(res);
+                    if (res.code == 200) {
+                        var categoryId = $('#categoryId');
+                        categoryId.append('<option value="">All Category</option>');
+                        for (var i = 0; i < res.data.length; i++) {
+                            categoryId.append('<option value="'+ res.data[i].category_id+'">'+ res.data[i].name+'</option>');
+                        }
+                    }
+                }
+            }) 
+        })
+        function clearData() {
+            $('#title').val('');
+            $('#categoryId').val('');
+            searchData();
+        }
+
+        searchData();
+
+        function searchData() {
+             //请求
+             $.ajax({
+                url: 'http://localhost:5558/search?categoryId=' + ($('#categoryId').val()?$('#categoryId').val():'') + '&title=' + $('#title').val(),
+                type: 'get',
+                success: function (res) {
+                    console.log(res);
+                    if (res.code == 200 ) {
+                        var html = '';
+                        if(res.data.length > 0){
+                            for (var i = 0; i < res.data.length; i++) {
+                                html += '<li><a href="about.html?fundraiserId=' + res.data[i].fundraiser_id + '"><img src="images/' + res.data[i].image + '" alt=""><div class="pro-rightarea"><p>' + res.data[i].caption + '</p><p style="color:#000000">Current USD &nbsp;&nbsp;' + res.data[i].current_funding + '</p><span>Target USD &nbsp;&nbsp;' + res.data[i].target_funding + '</span></div></a></li>';
+                            }
+                        }else{
+                            html += '<li><p style="text-align: center;font-size: 20px;margin-top: 20px;">No data</p></li>';
+                        }
+                        $('.pro-body').html(html);
+                    }
+                }
+            })
+        }
+    </script>
+
+</body>
+
+</html>
