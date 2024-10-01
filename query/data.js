@@ -1,4 +1,4 @@
-// Import the mysql module to interact with 
+// Import the mysql module to interact with MySQL databases
 const mysql = require("mysql");
 // Import the database configuration from the config module
 const { dbConfig } = require("../utils/config");
