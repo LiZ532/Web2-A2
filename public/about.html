@@ -37,7 +37,36 @@
         </ul>
     </div>
 
-    
+    <main id="main"></main>
+        <div class="index-main-title">
+            <p>About</p> <!-- Regarding the titles of certain sections -->
+        </div>
+        <div class="index-main-md">
+            <div class="left-area">
+                <img src="images/smcase1.png" alt="" id="image"> <!-- Display pictures related to fundraising -->
+            </div>
+            <div class="right-area">
+                <p id="caption"></p> <!-- caption -->
+                <span style="font-size: 16px;font-weight: bold;" id="current_funding"></span> <!-- Current fundraising amount -->
+                <p id="target_funding" style="color: #999999;"></p> <!-- Target fundraising amount -->
+                <p id="active" style="color:rgb(94, 226, 6);"></p> <!-- Is the fundraising event active -->
+            </div>
+        </div>
+        
+        <div class="index-main-title">
+            <p id="city" style="margin-bottom: 30px;"></p> <!-- City and category information -->
+            <span id="organizer" style="text-align: left;"></span> <!-- Organizer Information -->
+        </div>
+
+        <p style="text-align: center;">
+            <button type="button" class="am-btn am-btn-danger" onclick="alert('This feature is under construction')" style="width: 150px;">
+                Donate
+            </button> <!-- Donation button, prompt pops up when clicked -->
+            <button type="button" class="am-btn am-btn-danger" onclick="window.location.href='fundraiser.html'" style="width: 150px;border:1px solid darkgrey;background: darkgrey;color: #ffffff;">
+                Back
+            </button> <!-- Button to return to the fundraising page -->
+        </p>
+    </main>
 
     <footer class="footer" style="margin-top: 30px;">
         <div class="footer-pc">
