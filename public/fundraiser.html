@@ -3,10 +3,12 @@
 
 <head>
     <title>fundraiser</title>
+    <!-- Link to the default CSS stylesheet -->
     <link rel="stylesheet" href="css/default.css" />
     <style>
-        .message-form li button{
-            width: 160px;
+        /* Style for buttons within the message form */
+        .message-form li button {
+            width: 160px; /* Set the width of the buttons */
         }
     </style>
 </head>
@@ -15,9 +17,10 @@
     <header>
         <div class="header-top">
             <div class="width-center">
-                <div class="header-logo "><img src="images/logo.png" alt=""></div>
-                <div class="header-title div-inline">
-                </div>
+                <!-- Logo section -->
+                <div class="header-logo"><img src="images/logo.png" alt=""></div>
+                <div class="header-title div-inline"></div>
+                <!-- Help phone number display -->
                 <div class="header-right">
                     <span>Help Phone</span>
                     <span>400-000-000</span>
@@ -27,6 +30,7 @@
         <div class="header-nav">
             <nav>
                 <ul class="header-nav-ul am-collapse am-in">
+                    <!-- Navigation links -->
                     <li><a href="index.html" name="index">HOME</a></li>
                     <li class="on"><a href="fundraiser.html" name="show">FUNDRAISER</a></li>
                 </ul>
@@ -34,92 +38,126 @@
         </div>
     </header>
     <main>
+        <!-- Main title for the Fundraisers section -->
         <div class="index-main-title">
             <p>Fundraisers</p>
         </div>
         <div class="message-body">
             <div class="message-form">
+                <!-- Form to capture fundraiser details -->
                 <form method="post">
                     <ul>
-                        <li><label for="title">caption&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input placeholder="Please enter the caption" style="line-height: 40px;height: 40px;border: 1px solid #333;width: 940px;" class="am-form-field" id="title" name="title"></li>
-                        <li><label for="tel">category</label><select style="line-height: 40px;height: 40px;width: 945px;" id="categoryId" ></select></li>
-                        <li><button type="button" class="am-btn am-btn-danger" onclick="searchData()"  style="margin-left:105px;">search</button>
-                            <button type="button" class="am-btn am-btn-danger" onclick="clearData()"  style="margin-left:30px;border:1px solid darkgrey;background: darkgrey;color: #ffffff;">clear</button>
+                        <!-- Input field for caption -->
+                        <li>
+                            <label for="title">caption&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input placeholder="Please enter the caption" style="line-height: 40px;height: 40px;border: 1px solid #333;width: 940px;" 
+                                   class="am-form-field" id="title" name="title">
+                        </li>
+                        <!-- Dropdown for category selection -->
+                        <li>
+                            <label for="tel">category</label>
+                            <select style="line-height: 40px;height: 40px;width: 945px;" id="categoryId"></select>
+                        </li>
+                        <!-- Buttons for search and clear actions -->
+                        <li>
+                            <button type="button" class="am-btn am-btn-danger" onclick="searchData()" style="margin-left:105px;">search</button>
+                            <button type="button" class="am-btn am-btn-danger" onclick="clearData()" style="margin-left:30px;border:1px solid darkgrey;background: darkgrey;color: #ffffff;">clear</button>
                         </li>
                     </ul>
                 </form>
             </div>
         </div>
-        <ul class="pro-body" id="pro-body">
-        </ul>
+        <!-- List to display results -->
+        <ul class="pro-body" id="pro-body"></ul>
     </main>
     <footer class="footer" style="margin-top: 30px;">
         <div class="footer-pc">
             <ul>
-                <li><a href="index.html">home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
-                        href="fundraiser.html">fundraiser</a></li>
+                <!-- Footer navigation links -->
+                <li><a href="index.html">home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="fundraiser.html">fundraiser</a></li>
                 <li>Copyright &copy; 2024</li>
             </ul>
         </div>
     </footer>
     <script>
+        // Fetching category list from the server
         fetch('http://localhost:5558/categoryList')
         .then(response => {
+            // Check if the response is OK (status in the range 200-299)
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            return response.json(); // Convert response to JSON
+        })
+        .then(res => {
+            // If the response code is 200, process the data
+            if (res.code == 200) {
+                // Add an initial option for "All Category"
+                res.data.unshift({category_id:'', name:'All Category'});
+                var categoryId = document.getElementById('categoryId'); // Get the dropdown element
+                // Loop through each category and create an option element
+                for (var i = 0; i < res.data.length; i++) {
+                    var option = document.createElement('option'); // Create a new option element
+                    var text = document.createTextNode(res.data[i].name); // Create text node for the option
+                    option.appendChild(text); // Append text to option
+                    option.value = res.data[i].category_id; // Set the value of the option
+                    categoryId.appendChild(option); // Append option to the select dropdown
+                }
+            }
+        })
+        .catch(error => console.error('There was a problem with your fetch operation:', error)); // Handle any errors
+
+        // Function to clear the input fields for title and category
+function clearData() {
+    // Set the value of the title input field to an empty string
+    document.getElementById('title').value = '';
+    // Reset the selected category in the dropdown to an empty string (default)
+    document.getElementById('categoryId').value = '';
+    // Call searchData function to refresh the displayed fundraisers after clearing inputs
+    searchData();
+}
+
+// Call the searchData function initially to load data when the page loads
+searchData();
+
+// Function to search for fundraisers based on user input
+function searchData() {
+    // Get the value from the title input field
+    var title = document.getElementById('title').value;
+    // Get the value of the selected category from the dropdown
+    var categoryId = document.getElementById('categoryId').value;
+
+    // Fetch data from the server using the specified parameters (category ID and title)
+    fetch('http://localhost:5558/search?categoryId=' + categoryId + '&title=' + title)
+        .then(response => {
+            // Check if the response is ok (status in the range 200-299)
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Convert the response to JSON format
             return response.json();
         })
         .then(res => {
+            // Check if the response code indicates success
             if (res.code == 200) {
-                res.data.unshift({category_id:'',name:'All Category'});
-                var categoryId = document.getElementById('categoryId')
-                for (var i = 0; i < res.data.length; i++) {
-                    var option = document.createElement('option');
-                    var text = document.createTextNode(res.data[i].name);
-                    option.appendChild(text);
-                    option.value = res.data[i].category_id;
-                    categoryId.appendChild(option);
+                var html = ''; // Initialize an empty string to build HTML content
+                // Check if there are any results in the response data
+                if (res.data.length > 0) {
+                    // Loop through each result and append HTML list items
+                    for (var i = 0; i < res.data.length; i++) {
+                        html += '<li><a href="about.html?fundraiserId=' + res.data[i].fundraiser_id + '"><img src="images/' + res.data[i].image + '" alt=""><div class="pro-rightarea"><p>' + res.data[i].caption + '</p><p style="color:#000000">Current USD &nbsp;&nbsp;' + res.data[i].current_funding + '</p><span>Target USD &nbsp;&nbsp;' + res.data[i].target_funding + '</span></div></a></li>';
+                    }
+                } else {
+                    // If no results found, show a message indicating no data
+                    html += '<li><p style="text-align: center;font-size: 20px;margin-top: 20px;">No data</p></li>';
                 }
-           
+                // Update the inner HTML of the pro-body element with the generated list
+                document.getElementById('pro-body').innerHTML = html;
             }
         })
+        // Catch any errors encountered during the fetch operation and log them to the console
         .catch(error => console.error('There was a problem with your fetch operation:', error));
-
-        //清空
-        function clearData() {
-            document.getElementById('title').value='';
-            document.getElementById('categoryId').value='';
-            searchData();
-        }
-
-        searchData();
-
-        function searchData() {
-            var title = document.getElementById('title').value;
-            var categoryId = document.getElementById('categoryId').value;
-            fetch('http://localhost:5558/search?categoryId='+categoryId+'&title='+title)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(res => {
-                if (res.code == 200 ) {
-                    var html = '';
-                    if(res.data.length > 0){
-                        for (var i = 0; i < res.data.length; i++) {
-                            html += '<li><a href="about.html?fundraiserId=' + res.data[i].fundraiser_id + '"><img src="images/' + res.data[i].image + '" alt=""><div class="pro-rightarea"><p>' + res.data[i].caption + '</p><p style="color:#000000">Current USD &nbsp;&nbsp;' + res.data[i].current_funding + '</p><span>Target USD &nbsp;&nbsp;' + res.data[i].target_funding + '</span></div></a></li>';
-                        }
-                    }else{
-                        html += '<li><p style="text-align: center;font-size: 20px;margin-top: 20px;">No data</p></li>';
-                    }
-                    document.getElementById('pro-body').innerHTML=html
-                }
-            })
-        .catch(error => console.error('There was a problem with your fetch operation:', error));
-        }
+}
     </script>
 
 </body>
