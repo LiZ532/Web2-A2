@@ -77,32 +77,4 @@
         </div>
     </footer>
     
-    <script>
-        // Get query parameters from the URL
-        
-        let params = new URLSearchParams(window.location.search);
-        
-       
-         // Fetch fundraising data based on fundraiserId
-         
-        fetch('http://localhost:5558/about/' + params.get("fundraiserId"))
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok'); // Check if the response is ok
-            }
-            return response.json(); // Parse JSON data
-        })
-        .then(res => {
-            if (res.code == 200) { // If the response code is 200 (success)
-                let data = res.data[0]; // Get the first item of the data
-                document.getElementById("image").setAttribute("src", "images/" + data.image); // Set image source
-                document.getElementById("caption").innerHTML = (data.caption); // Set image caption
-                document.getElementById("current_funding").innerHTML = ("Current USD:  " + data.current_funding); // Set current funding amount
-                document.getElementById("target_funding").innerHTML = ("Target USD:  " + data.target_funding); // Set target funding amount
-                document.getElementById("organizer").innerHTML = (data.organizer); // Set organizer information
-                document.getElementById("city").innerHTML = ("City: " + data.city + "/Category:" + data.name); // Set city and category information
-                document.getElementById("active").innerHTML = ("Active: " + (data.active == 0 ? "No" : "Yes")); // Set activity status
-            }
-        })
-        .catch(error => console.error('There was a problem with your fetch operation:', error)); // Error handling
-    </script>
+   
