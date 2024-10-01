@@ -88,7 +88,7 @@
             if (!response.ok) {
                 throw new Error('Network response was not ok'); // Check if the response is ok
             }
-            return response.json(); // Parse JSON data
+            return response.json(); // Parse JSON 
         })
         .then(res => {
             if (res.code == 200) { // If the response code is 200 (success)
