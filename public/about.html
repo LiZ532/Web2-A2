@@ -2,92 +2,105 @@
 <html>
 
 <head>
-    <title>about</title>
-    <link rel="stylesheet" href="css/default.css" />
+    <title>about</title> <!-- TITLE -->
+    <link rel="stylesheet" href="css/default.css" /> <!-- Introduce external CSS style sheets -->
 </head>
 
 <body>
     <header>
         <div class="header-top">
             <div class="width-center">
-                <div class="header-logo "><img src="images/logo.png" alt=""></div>
+                <div class="header-logo "><img src="images/logo.png" alt=""></div> <!-- web logo -->
                 <div class="header-title div-inline">
+                    <!-- You can place website titles here -->
                 </div>
                 <div class="header-right">
-                    <span>Help Phone</span>
-                    <span>400-000-000</span>
+                    <span>Help Phone</span> <!-- Helpline -->
+                    <span>400-000-000</span> <!-- hotline -->
                 </div>
             </div>
         </div>
         <div class="header-nav">
             <nav>
                 <ul class="header-nav-ul am-collapse am-in">
-                    <li><a href="index.html" name="index">HOME</a></li>
-                    <li ><a href="fundraiser.html" name="show">FUNDRAISER</a></li>
+                    <li><a href="index.html" name="index">HOME</a></li> <!-- home link -->
+                    <li><a href="fundraiser.html" name="show">FUNDRAISER</a></li> <!-- Fundraising page link -->
                 </ul>
             </nav>
         </div>
     </header>
+
     <div class="am-viewport" style="overflow: hidden; position: relative;text-align: center;">
         <ul class="am-slides">
-            <li class="clone" style="display: block;margin-top: 20px;"><img src="images/banner2.png" style="width: 60vw;"></li>
+            <li class="clone" style="display: block;margin-top: 20px;">
+                <img src="images/banner2.png" style="width: 60vw;"> <!-- Banner image -->
+            </li>
         </ul>
     </div>
+
     <main id="main">
         <div class="index-main-title">
-            <p>About</p>
+            <p>About</p> <!-- Regarding the titles of certain sections -->
         </div>
         <div class="index-main-md">
             <div class="left-area">
-                <img src="images/smcase1.png" alt="" id="image">
+                <img src="images/smcase1.png" alt="" id="image"> <!-- Display pictures related to fundraising -->
             </div>
             <div class="right-area">
-                <p id="caption"></p>
-                <span style="font-size: 16px;font-weight: bold;" id="current_funding"></span>
-                <p id="target_funding" style="color: #999999;"></p>
-                <p id="active" style="color:rgb(94, 226, 6);"></p>
+                <p id="caption"></p> <!-- caption -->
+                <span style="font-size: 16px;font-weight: bold;" id="current_funding"></span> <!-- Current fundraising amount -->
+                <p id="target_funding" style="color: #999999;"></p> <!-- Target fundraising amount -->
+                <p id="active" style="color:rgb(94, 226, 6);"></p> <!-- Is the fundraising event active -->
             </div>
         </div>
+        
         <div class="index-main-title">
-            <p id="city" style="margin-bottom: 30px;"></p>
-            <span id="organizer" style="text-align: left;"></span>
+            <p id="city" style="margin-bottom: 30px;"></p> <!-- City and category information -->
+            <span id="organizer" style="text-align: left;"></span> <!-- Organizer Information -->
         </div>
-        <p style="text-align: center;"><button type="button" class="am-btn am-btn-danger" onclick="alert('This feature is under contruction')"  style="width: 150px;" >Donate</button>
-            <button type="button" class="am-btn am-btn-danger" onclick="window.location.href='fundraiser.html'"  style="width: 150px;border:1px solid darkgrey;background: darkgrey;color: #ffffff;" >Back</button></p>
+
+        <p style="text-align: center;">
+            <button type="button" class="am-btn am-btn-danger" onclick="alert('This feature is under construction')" style="width: 150px;">
+                Donate
+            </button> <!-- Donation button, prompt pops up when clicked -->
+            <button type="button" class="am-btn am-btn-danger" onclick="window.location.href='fundraiser.html'" style="width: 150px;border:1px solid darkgrey;background: darkgrey;color: #ffffff;">
+                Back
+            </button> <!-- Button to return to the fundraising page -->
+        </p>
     </main>
+
     <footer class="footer" style="margin-top: 30px;">
         <div class="footer-pc">
             <ul>
-                <li><a href="index.html">home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
-                        href="fundraiser.html">fundraiser</a></li>
-                <li>Copyright &copy; 2024</li>
+                <li><a href="index.html">home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="fundraiser.html">fundraiser</a></li>
+                <li>Copyright &copy; 2024</li> <!-- Footer copyright information -->
             </ul>
         </div>
     </footer>
+    
     <script>
-         let params = new URLSearchParams(window.location.search)
-        fetch('http://localhost:5558/about/'+ params.get("fundraiserId"))
+        // Get query parameters from the URL
+        let params = new URLSearchParams(window.location.search);
+        
+        // Fetch fundraising data based on fundraiserId
+        fetch('http://localhost:5558/about/' + params.get("fundraiserId"))
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok'); // Check if the response is ok
             }
-            return response.json();
+            return response.json(); // Parse JSON data
         })
         .then(res => {
-            if (res.code == 200) {
-                let data = res.data[0];
-                document.getElementById("image").setAttribute("src","images/"+data.image)
-                document.getElementById("caption").innerHTML=(data.caption)
-                document.getElementById("current_funding").innerHTML=("Current USD:  "+data.current_funding)
-                document.getElementById("target_funding").innerHTML=("Target USD:  "+data.target_funding)
-                document.getElementById("organizer").innerHTML=(data.organizer)
-                document.getElementById("city").innerHTML=("City: "+data.city+"/Category:"+data.name)
-                document.getElementById("active").innerHTML=("Active: "+(data.active==0?"No":"Yes"))
+            if (res.code == 200) { // If the response code is 200 (success)
+                let data = res.data[0]; // Get the first item of the data
+                document.getElementById("image").setAttribute("src", "images/" + data.image); // Set image source
+                document.getElementById("caption").innerHTML = (data.caption); // Set image caption
+                document.getElementById("current_funding").innerHTML = ("Current USD:  " + data.current_funding); // Set current funding amount
+                document.getElementById("target_funding").innerHTML = ("Target USD:  " + data.target_funding); // Set target funding amount
+                document.getElementById("organizer").innerHTML = (data.organizer); // Set organizer information
+                document.getElementById("city").innerHTML = ("City: " + data.city + "/Category:" + data.name); // Set city and category information
+                document.getElementById("active").innerHTML = ("Active: " + (data.active == 0 ? "No" : "Yes")); // Set activity status
             }
         })
-        .catch(error => console.error('There was a problem with your fetch operation:', error));
-
+        .catch(error => console.error('There was a problem with your fetch operation:', error)); // Error handling
     </script>
-</body>
-
-</html>
