@@ -46,7 +46,7 @@ app.get('/about/:fundraiserId', async function (req, res) {
 	})
 })
 
-//Obtain classification data number
+//Obtain classification data
 app.get('/categoryList', async function (req, res) {
 	getData('select * from category',function (err, data) {
 		res.send(msg.sucess(data, 'success'))
@@ -54,9 +54,10 @@ app.get('/categoryList', async function (req, res) {
 })
 
 
-//Start entry 5558 with port 
+//Start entry 5558 with port number
 app.listen((5558), function () {
   console.log(`express-api running on port 5558`);
   console.log(`http://localhost:5558/index.html`);
 });
+
 
