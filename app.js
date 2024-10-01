@@ -5,7 +5,7 @@ const app = express();
 const path = require('path')
 //Cross domain module
 app.use(cors())
-//Format parameter JSON
+//Format parameter 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 //Configuration page
