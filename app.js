@@ -46,7 +46,7 @@ app.get('/about/:fundraiserId', async function (req, res) {
 	})
 })
 
-//Obtain classification data
+//Obtain classification data number
 app.get('/categoryList', async function (req, res) {
 	getData('select * from category',function (err, data) {
 		res.send(msg.sucess(data, 'success'))
