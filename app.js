@@ -1,14 +1,14 @@
 const express = require("express");
 const cors = require('cors');
 const app = express();
-//路径模块
+//path module
 const path = require('path')
-//跨域模块
+//Cross domain module
 app.use(cors())
-//传参json格式化
+//Format parameter JSON
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-//配置页面
+//Configuration page
 app.use(express.static(path.join(__dirname, 'public')))
 const { msg } = require('./utils/config')
 const {
@@ -16,7 +16,7 @@ const {
 } = require("./query/data")
 
 
-//获取活动数据
+//Obtain activity data
 app.get('/getActiveData', async function (req, res) {
 	getData('select * from fundraiser where active=0',function (err, data) {
 		res.send(msg.sucess(data, 'success'))
@@ -24,7 +24,7 @@ app.get('/getActiveData', async function (req, res) {
 })
 
 
-//获取搜索数据
+//Retrieve search data
 app.get('/search', async function (req, res) {
 	let search= req.query
 	var sql = 'select * from fundraiser where (active=1 or active=0) '
@@ -46,7 +46,7 @@ app.get('/about/:fundraiserId', async function (req, res) {
 	})
 })
 
-//获取分类数据
+//Obtain classification data
 app.get('/categoryList', async function (req, res) {
 	getData('select * from category',function (err, data) {
 		res.send(msg.sucess(data, 'success'))
@@ -54,7 +54,7 @@ app.get('/categoryList', async function (req, res) {
 })
 
 
-//启动入口 5558为端口号
+//Start entry 5558 with port number
 app.listen((5558), function () {
   console.log(`express-api running on port 5558`);
   console.log(`http://localhost:5558/index.html`);
