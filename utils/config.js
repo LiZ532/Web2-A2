@@ -1,5 +1,5 @@
 module.exports = {
-  //数据库配置
+  //Database Configuration
   dbConfig:{
     host: 'localhost',
     port: '3306',
